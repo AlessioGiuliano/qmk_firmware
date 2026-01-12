@@ -18,12 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 
-// Firmware flashing mode
-const uint16_t PROGMEM reset_combo[] = {KC_ESC, KC_BSPC, KC_SPC, KC_ENT};
-combo_t key_combos[1] = {
-    COMBO(reset_combo, QK_BOOT),
-};
-
 // Home row mods config
 #define TAPPING_TERM 200
 #define PERMISSIVE_HOLD
@@ -41,15 +35,53 @@ combo_t key_combos[1] = {
 #define HRM_A GUI_T(KC_A)
 
 // Symbols layer HRM
+
+enum custom_keycodes {
+    CT_LB = SAFE_RANGE,  // Ctrl on hold, ( on tap
+    CT_RB,               // Ctrl on hold, ) on tap
+    CT_DLR,
+    CT_CIR
+};
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case CT_LB:
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_LPRN);
+                return false;
+            }
+            break;
+        case CT_RB:
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_RPRN);
+                return false;
+            }
+            break;
+        case CT_DLR:
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_DLR);
+                return false;
+            }
+            break;
+        case CT_CIR:
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_CIRC);
+                return false;
+            }
+            break;
+    }
+    return true;
+}
+
 #define HRM_6 SFT_T(KC_6)
 #define HRM_5 CTL_T(KC_5)
 #define HRM_4 ALT_T(KC_4)
 #define HRM_0 GUI_T(KC_0)
 
-#define HRM_LB SFT_T(KC_LPRN)
-#define HRM_RB CTL_T(KC_RPRN)
-#define HRM_DLR ALT_T(KC_DLR)
-#define HRM_CIR GUI_T(KC_CIRC)
+#define HRM_LB SFT_T(CT_LB)
+#define HRM_RB CTL_T(CT_RB)
+#define HRM_DLR ALT_T(CT_DLR)
+#define HRM_CIR GUI_T(CT_CIR)
 
 // Navigation layer HRM
 #define HRM_F6 SFT_T(KC_F6)
@@ -123,7 +155,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_DEL,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI,   MO(2),  KC_SPC,     KC_ENT,   MO(3), MO(4)
+                                          KC_LGUI,   MO(3),  KC_SPC,     KC_ENT,   MO(2), MO(4)
                                       //`--------------------------'  `--------------------------'
 
   ),
@@ -146,7 +178,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
        KC_GRV, KC_BSLS,    KC_7,    KC_8,    KC_9,  KC_EQL,                      KC_ASTR, KC_LCBR, KC_RCBR, KC_EXLM, KC_PERC,   KC_AT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______,   HRM_0,   HRM_4,   HRM_5,    KC_6, KC_MINS,                      KC_UNDS,  HRM_LB,  HRM_RB, HRM_DLR, HRM_CIR, _______,
+      _______,   HRM_0,   HRM_4,   HRM_5,   HRM_6, KC_MINS,                      KC_UNDS,  HRM_LB,  HRM_RB, HRM_DLR, HRM_CIR, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______,  KC_DOT,    KC_1,    KC_2,    KC_3, KC_PLUS,                      KC_HASH, KC_LBRC, KC_RBRC, KC_AMPR, _______, _______,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -159,7 +191,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, HRM_NOP,  HRM_F4,  HRM_F5,  HRM_F6, _______,                      _______,  HRM_LE,  HRM_DO,  HRM_UP,  HRM_RI, _______,
+      _______, HRM_NOP,  HRM_F4,  HRM_F5,  HRM_F6, _______,                      HRM_LE,  HRM_DO,  HRM_UP,  HRM_RI,  _______, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -181,7 +213,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       //`--------------------------'  `--------------------------'
   )
 };
-
 
 #ifdef ENCODER_MAP_ENABLE
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
