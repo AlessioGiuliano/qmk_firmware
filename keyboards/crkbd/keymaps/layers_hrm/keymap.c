@@ -53,6 +53,15 @@ const uint32_t unicode_map[] PROGMEM = {
     [O_CIRC]  = 0x00F4,  // ç
 };
 
+uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        // Avoid triggering f twice in vim when looking for capital letter
+        case HRM_F:
+            return 0;
+        default:
+            return QUICK_TAP_TERM;
+    }
+}
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_split_3x6_3(

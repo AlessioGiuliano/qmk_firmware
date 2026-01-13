@@ -59,16 +59,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define QUICK_TAP_TERM_PER_KEY
 #define QUICK_TAP_TERM 120
 
-uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        // Avoid triggering f twice in vim when looking for capital letter
-        case HRM_F:
-            return 0;
-        default:
-            return QUICK_TAP_TERM;
-    }
-}
-
 #ifdef RGBLIGHT_ENABLE
     #define RGBLIGHT_EFFECT_BREATHING
     #define RGBLIGHT_EFFECT_RAINBOW_MOOD
