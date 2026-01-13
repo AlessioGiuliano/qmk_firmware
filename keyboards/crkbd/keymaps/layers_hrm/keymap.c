@@ -18,81 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 
-// Home row mods config
-#define TAPPING_TERM 200
-#define PERMISSIVE_HOLD
-#define HOLD_ON_OTHER_KEY_PRESS
-
-// Home row mods macros
-#define HRM_J SFT_T(KC_J)
-#define HRM_K CTL_T(KC_K)
-#define HRM_L ALT_T(KC_L)
-#define HRM_SCLN GUI_T(KC_SCLN)
-
-#define HRM_F SFT_T(KC_F)
-#define HRM_D CTL_T(KC_D)
-#define HRM_S ALT_T(KC_S)
-#define HRM_A GUI_T(KC_A)
-
-// Symbols layer HRM
-
-enum custom_keycodes {
-    CT_LB = SAFE_RANGE,  // Ctrl on hold, ( on tap
-    CT_RB,               // Ctrl on hold, ) on tap
-    CT_DLR,
-    CT_CIR
-};
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case CT_LB:
-            if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_LPRN);
-                return false;
-            }
-            break;
-        case CT_RB:
-            if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_RPRN);
-                return false;
-            }
-            break;
-        case CT_DLR:
-            if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_DLR);
-                return false;
-            }
-            break;
-        case CT_CIR:
-            if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_CIRC);
-                return false;
-            }
-            break;
-    }
-    return true;
-}
-
-#define HRM_6 SFT_T(KC_6)
-#define HRM_5 CTL_T(KC_5)
-#define HRM_4 ALT_T(KC_4)
-#define HRM_0 GUI_T(KC_0)
-
-#define HRM_LB SFT_T(CT_LB)
-#define HRM_RB CTL_T(CT_RB)
-#define HRM_DLR ALT_T(CT_DLR)
-#define HRM_CIR GUI_T(CT_CIR)
-
-// Navigation layer HRM
-#define HRM_F6 SFT_T(KC_F6)
-#define HRM_F5 CTL_T(KC_F5)
-#define HRM_F4 ALT_T(KC_F4)
-#define HRM_NOP GUI_T(XXXXXXX)
-
-#define HRM_LE SFT_T(KC_LEFT)
-#define HRM_DO CTL_T(KC_DOWN)
-#define HRM_UP ALT_T(KC_UP)
-#define HRM_RI GUI_T(KC_RIGHT)
 
 // French accents
 enum unicode_names {
@@ -100,28 +25,11 @@ enum unicode_names {
     A_GRAVE, A_CIRC, C_CEDIL, U_TREM,
     U_GRAVE, U_CIRC, I_TREM, I_CIRC, O_TREM,
     O_CIRC
-    // etc.
 };
 
 // FIXME: Handle Linux
 #define UNICODE_SELECTED_MODES UNICODE_MODE_WINCOMPOSE
 
-// bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-//     switch (keycode) {
-//         case UC_LINX:
-//             if (record->event.pressed) {
-//                 set_unicode_input_mode(UNICODE_MODE_LINUX);
-//             }
-//             return false;
-//         case UC_WINC:
-//             if (record->event.pressed) {
-//                 set_unicode_input_mode(UNICODE_MODE_WINCOMPOSE);
-//             }
-//             return false;
-//     }
-//     return true;
-// }
-//
 void keyboard_post_init_user(void) {
     set_unicode_input_mode(UNICODE_MODE_WINCOMPOSE);  // default
 }
@@ -178,7 +86,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
        KC_GRV, KC_BSLS,    KC_7,    KC_8,    KC_9,  KC_EQL,                      KC_ASTR, KC_LCBR, KC_RCBR, KC_EXLM, KC_PERC,   KC_AT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______,   HRM_0,   HRM_4,   HRM_5,   HRM_6, KC_MINS,                      KC_UNDS,  HRM_LB,  HRM_RB, HRM_DLR, HRM_CIR, _______,
+      CW_TOGG,   HRM_0,   HRM_4,   HRM_5,   HRM_6, KC_MINS,                      KC_UNDS, KC_LPRN, KC_RPRN,  KC_DLR, KC_CIRC, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______,  KC_DOT,    KC_1,    KC_2,    KC_3, KC_PLUS,                      KC_HASH, KC_LBRC, KC_RBRC, KC_AMPR, _______, _______,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -191,7 +99,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, HRM_NOP,  HRM_F4,  HRM_F5,  HRM_F6, _______,                      HRM_LE,  HRM_DO,  HRM_UP,  HRM_RI,  _______, _______,
+      _______, KC_LGUI,  HRM_F4,  HRM_F5,  HRM_F6, _______,                      HRM_LE,  HRM_DO,  HRM_UP,  HRM_RI,  _______, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -200,7 +108,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
     // Accents layer
-    // TODO
+    // FIXME: Does not work properly on Windows at aleast
     [4] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       UM(E_CIRC), UM(E_GRAVE), UM(E_AIGU), UM(E_TREM), _______, _______,                      _______, UM(U_GRAVE), UM(I_CIRC), UM(O_CIRC), _______, _______,

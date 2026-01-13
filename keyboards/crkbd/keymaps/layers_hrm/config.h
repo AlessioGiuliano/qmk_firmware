@@ -20,12 +20,54 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-//#define USE_MATRIX_I2C
-
-//#define QUICK_TAP_TERM 0
-//#define TAPPING_TERM 100
-
 #define SPLIT_USB_DETECT
+
+// Home row mods macros
+#define HRM_J SFT_T(KC_J)
+#define HRM_K CTL_T(KC_K)
+#define HRM_L ALT_T(KC_L)
+#define HRM_SCLN GUI_T(KC_SCLN)
+
+#define HRM_F SFT_T(KC_F)
+#define HRM_D CTL_T(KC_D)
+#define HRM_S ALT_T(KC_S)
+#define HRM_A GUI_T(KC_A)
+
+// Symbols layer: Left half only
+#define HRM_6 SFT_T(KC_6)
+#define HRM_5 CTL_T(KC_5)
+#define HRM_4 ALT_T(KC_4)
+#define HRM_0 GUI_T(KC_0)
+
+// Navigation layer HRM
+#define HRM_F6 SFT_T(KC_F6)
+#define HRM_F5 CTL_T(KC_F5)
+#define HRM_F4 ALT_T(KC_F4)
+// GUI is unbound -> Use regular GUI
+
+#define HRM_LE SFT_T(KC_LEFT)
+#define HRM_DO CTL_T(KC_DOWN)
+#define HRM_UP ALT_T(KC_UP)
+#define HRM_RI GUI_T(KC_RIGHT)
+
+
+// Home row mods config
+#define TAPPING_TERM 200
+#define PERMISSIVE_HOLD
+#define HOLD_ON_OTHER_KEY_PRESS
+
+#define QUICK_TAP_TERM_PER_KEY
+#define QUICK_TAP_TERM 120
+
+uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        // Avoid triggering f twice in vim when looking for capital letter
+        case HRM_F:
+            return 0;
+        default:
+            return QUICK_TAP_TERM;
+    }
+}
 
 #ifdef RGBLIGHT_ENABLE
     #define RGBLIGHT_EFFECT_BREATHING
