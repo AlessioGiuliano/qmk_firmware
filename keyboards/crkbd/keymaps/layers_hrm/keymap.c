@@ -18,39 +18,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 
-
-// French accents
-enum unicode_names {
-    E_AIGU, E_GRAVE, E_CIRC, E_TREM,
-    A_GRAVE, A_CIRC, C_CEDIL, U_TREM,
-    U_GRAVE, U_CIRC, I_TREM, I_CIRC, O_TREM,
-    O_CIRC
-};
-
-// FIXME: Handle Linux
-#define UNICODE_SELECTED_MODES UNICODE_MODE_WINCOMPOSE
-
-void keyboard_post_init_user(void) {
-    set_unicode_input_mode(UNICODE_MODE_WINCOMPOSE);  // default
-}
-
-
-// FIXME: Add better comments
-const uint32_t unicode_map[] PROGMEM = {
-    [E_AIGU]   = 0x00E9,  // é
-    [E_GRAVE]  = 0x00E8,  // è
-    [E_CIRC]   = 0x00EA,  // ê
-    [E_TREM]   = 0x00EB,  // ë
-    [A_GRAVE]  = 0x00E0,  // à
-    [A_CIRC]   = 0x00E2,  // â
-    [C_CEDIL]  = 0x00E7,  // ç
-    [U_TREM]  = 0x00FC,  // ç
-    [U_GRAVE]  = 0x00F9,  // ç
-    [U_CIRC]  = 0x00FB,  // ç
-    [I_TREM]  = 0x00EF,  // ç
-    [I_CIRC]  = 0x00EE,  // ç
-    [O_TREM]  = 0x00F6,  // ç
-    [O_CIRC]  = 0x00F4,  // ç
+enum layers {
+    _QWERTY_HRM,
+    _QWERTY_STD,
+    _SYMBOLS,
+    _NAVIGATION,
+    _ACCENTS
 };
 
 uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
@@ -63,8 +36,21 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+// Accents via US-International AltGr
+#define E_AIGU RALT(KC_E)    // é
+// #define FR_E_GRA RALT(KC_GRV)  // è
+#define A_GRV RALT(KC_A)    // à
+#define U_GRV RALT(KC_U)    // ù
+#define C_CED RALT(KC_C)    // ç
+#define I_GRV RALT(KC_I)    // î
+
+#define ACC_GRV RALT(KC_GRV)
+#define ACC_AIG RALT(KC_QUOT)
+#define ACC_CIR RALT(KC_CIRC)
+#define ACC_TRE RALT(KC_DQT)
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [0] = LAYOUT_split_3x6_3(
+    [_QWERTY_HRM] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
        KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -72,13 +58,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_DEL,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI,   MO(3),  KC_SPC,     KC_ENT,   MO(2), MO(4)
+                                          KC_LGUI,   MO(_NAVIGATION),  KC_SPC,     KC_ENT,   MO(_SYMBOLS), MO(_ACCENTS)
                                       //`--------------------------'  `--------------------------'
 
   ),
 
     // Home row mods disabled
-    [1] = LAYOUT_split_3x6_3(
+    [_QWERTY_STD] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -90,8 +76,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       //`--------------------------'  `--------------------------'
   ),
 
-    // Symbols layer
-    [2] = LAYOUT_split_3x6_3(
+    [_SYMBOLS] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
        KC_GRV, KC_BSLS,    KC_7,    KC_8,    KC_9,  KC_EQL,                      KC_ASTR, KC_LCBR, KC_RCBR, KC_EXLM, KC_PERC,   KC_AT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -103,8 +88,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       //`--------------------------'  `--------------------------'
   ),
 
-    // Navigation layer
-    [3] = LAYOUT_split_3x6_3(
+    [_NAVIGATION] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -116,19 +100,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       //`--------------------------'  `--------------------------'
   ),
 
-    // Accents layer
-    // FIXME: Does not work properly on Windows at aleast
-    [4] = LAYOUT_split_3x6_3(
+    [_ACCENTS] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      UM(E_CIRC), UM(E_GRAVE), UM(E_AIGU), UM(E_TREM), _______, _______,                      _______, UM(U_GRAVE), UM(I_CIRC), UM(O_CIRC), _______, _______,
+      ACC_GRV, _______, _______,  E_AIGU, ACC_GRV, _______,                      _______, U_GRV,  I_GRV,  _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      UM(A_GRAVE), UM(A_CIRC), _______, _______, _______, _______,                      _______, UM(U_CIRC), UM(I_TREM), UM(O_TREM), _______, _______,
+      _______,  A_GRV,  _______, _______, ACC_AIG, ACC_TRE,                      _______,  _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, _______, _______, UM(C_CEDIL), _______, _______,                      _______, UM(U_TREM), _______, _______, _______, _______,
+      _______, _______, _______,   C_CED, ACC_CIR, _______,                      _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,     _______, _______, _______
                                       //`--------------------------'  `--------------------------'
-  )
+ )
 };
 
 #ifdef ENCODER_MAP_ENABLE
