@@ -38,7 +38,6 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
 
 // Accents via US-International AltGr
 #define E_AIGU RALT(KC_E)    // é
-// #define FR_E_GRA RALT(KC_GRV)  // è
 #define A_GRV RALT(KC_A)    // à
 #define U_GRV RALT(KC_U)    // ù
 #define C_CED RALT(KC_C)    // ç
@@ -50,11 +49,11 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
 #define ACC_TRE RALT(KC_DQT)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [_QWERTY_HRM] = LAYOUT_split_3x6_3(
+    [_QWERTY_HRM] = LAYOUT_split_3x6_3_ex2(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_BSPC,
+       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T, LM_TOGG,    _______,    KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-       KC_ESC,   HRM_A,   HRM_S,   HRM_D,   HRM_F,    KC_G,                         KC_H,   HRM_J,   HRM_K,   HRM_L,HRM_SCLN, KC_QUOT,
+       KC_ESC,   HRM_A,   HRM_S,   HRM_D,   HRM_F,    KC_G, _______,    _______,    KC_H,   HRM_J,   HRM_K,   HRM_L,HRM_SCLN, KC_QUOT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_DEL,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -76,13 +75,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       //`--------------------------'  `--------------------------'
   ),
 
-    [_SYMBOLS] = LAYOUT_split_3x6_3(
+    [_SYMBOLS] = LAYOUT_split_3x6_3_ex2(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_GRV, KC_BSLS,    KC_7,    KC_8,    KC_9,  KC_EQL,                      KC_ASTR, KC_LCBR, KC_RCBR, KC_EXLM, KC_PERC,   KC_AT,
+       KC_GRV, KC_PIPE,    KC_7,    KC_8,    KC_9,  KC_EQL, LM_NEXT,  LM_BRIU,    KC_ASTR, KC_LCBR, KC_RCBR, KC_EXLM, KC_PERC,   KC_AT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      CW_TOGG,   HRM_0,   HRM_4,   HRM_5,   HRM_6, KC_MINS,                      KC_UNDS, KC_LPRN, KC_RPRN,  KC_DLR, KC_CIRC, _______,
+      CW_TOGG,   HRM_0,   HRM_4,   HRM_5,   HRM_6, KC_MINS, LM_PREV,  LM_BRID,   KC_UNDS, KC_LPRN, KC_RPRN,  KC_DLR, KC_CIRC, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______,  KC_DOT,    KC_1,    KC_2,    KC_3, KC_PLUS,                      KC_HASH, KC_LBRC, KC_RBRC, KC_AMPR, _______, _______,
+      _______,  KC_DOT,    KC_1,    KC_2,    KC_3, KC_PLUS,                      KC_HASH, KC_LBRC, KC_RBRC, KC_AMPR, KC_BSLS, _______,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,    _______, _______, _______
                                       //`--------------------------'  `--------------------------'
