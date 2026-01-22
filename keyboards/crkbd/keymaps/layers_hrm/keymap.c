@@ -37,13 +37,12 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
 }
 
 // Accents via US-International AltGr
-#define E_AIGU RALT(KC_E)    // é
-#define C_CED RALT(KC_C)    // ç
-#define I_GRV RALT(KC_I)    // î
+#define E_AIGU RALT(KC_E)
+#define C_CED RALT(KC_COMM)
 
 #define ACC_GRV RALT(KC_GRV)
 #define ACC_AIG RALT(KC_QUOT)
-#define ACC_CIR RALT(KC_CIRC)
+#define ACC_CIR RALT(KC_6)
 #define ACC_TRE RALT(KC_DQT)
 
 enum custom_keycodes {
@@ -76,7 +75,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
     case E_CIRC:
         if (record->event.pressed) {
-            SEND_STRING(SS_RALT("^") "e");
+            SEND_STRING(SS_RALT("6") "e");
         }
         return false;
     case E_TREM:
@@ -91,17 +90,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
     case A_CIRC:
         if (record->event.pressed) {
-            SEND_STRING(SS_RALT("^") "a");
+            SEND_STRING(SS_RALT("6") "a");
         }
         return false;
     case U_GRV:
         if (record->event.pressed) {
-            SEND_STRING(SS_RALT("^") "u");
+            SEND_STRING(SS_RALT("6") "u");
         }
         return false;
     case U_CIRC:
         if (record->event.pressed) {
-            SEND_STRING(SS_RALT("^") "u");
+            SEND_STRING(SS_RALT("6") "u");
         }
         return false;
     case U_TREM:
@@ -111,7 +110,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
     case I_CIRC:
         if (record->event.pressed) {
-            SEND_STRING(SS_RALT("^") "i");
+            SEND_STRING(SS_RALT("6") "i");
         }
         return false;
     case I_TREM:
@@ -144,7 +143,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           KC_LGUI,   MO(_NAVIGATION),  KC_SPC,     KC_ENT,   MO(_SYMBOLS), MO(_ACCENTS)
                                       //`--------------------------'  `--------------------------'
-
   ),
 
     // Home row mods disabled
@@ -190,7 +188,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______,  A_GRV,   A_CIRC, _______, ACC_AIG, ACC_TRE,                      _______,  U_CIRC,  I_TREM,  O_TREM, _______, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, _______, _______,   C_CED, ACC_CIR, _______,                      _______,  U_TREM, _______, _______, _______, PIX4D,
+      _______, _______, _______,   C_CED, ACC_CIR, _______,                      _______,  U_TREM, _______, _______, _______,   PIX4D,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,     _______, _______, _______
                                       //`--------------------------'  `--------------------------'
