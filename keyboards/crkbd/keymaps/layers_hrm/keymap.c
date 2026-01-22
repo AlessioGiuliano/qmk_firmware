@@ -38,8 +38,6 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
 
 // Accents via US-International AltGr
 #define E_AIGU RALT(KC_E)    // é
-#define A_GRV RALT(KC_A)    // à
-#define U_GRV RALT(KC_U)    // ù
 #define C_CED RALT(KC_C)    // ç
 #define I_GRV RALT(KC_I)    // î
 
@@ -51,6 +49,17 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
 enum custom_keycodes {
     PIX4D = SAFE_RANGE,
     E_GRV,
+    E_CIRC,
+    E_TREM,
+    A_GRV,
+    A_CIRC,
+    U_GRV,
+    U_CIRC,
+    U_TREM,
+    I_CIRC,
+    I_TREM,
+    O_CIRC,
+    O_TREM,
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -63,6 +72,61 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case E_GRV:
         if (record->event.pressed) {
             SEND_STRING(SS_RALT("`") "e");
+        }
+        return false;
+    case E_CIRC:
+        if (record->event.pressed) {
+            SEND_STRING(SS_RALT("^") "e");
+        }
+        return false;
+    case E_TREM:
+        if (record->event.pressed) {
+            SEND_STRING(SS_RALT("\"") "e");
+        }
+        return false;
+    case A_GRV:
+        if (record->event.pressed) {
+            SEND_STRING(SS_RALT("`") "a");
+        }
+        return false;
+    case A_CIRC:
+        if (record->event.pressed) {
+            SEND_STRING(SS_RALT("^") "a");
+        }
+        return false;
+    case U_GRV:
+        if (record->event.pressed) {
+            SEND_STRING(SS_RALT("^") "u");
+        }
+        return false;
+    case U_CIRC:
+        if (record->event.pressed) {
+            SEND_STRING(SS_RALT("^") "u");
+        }
+        return false;
+    case U_TREM:
+        if (record->event.pressed) {
+            SEND_STRING(SS_RALT("\"") "u");
+        }
+        return false;
+    case I_CIRC:
+        if (record->event.pressed) {
+            SEND_STRING(SS_RALT("^") "i");
+        }
+        return false;
+    case I_TREM:
+        if (record->event.pressed) {
+            SEND_STRING(SS_RALT("\"") "i");
+        }
+        return false;
+    case O_CIRC:
+        if (record->event.pressed) {
+            SEND_STRING(SS_RALT("^") "o");
+        }
+        return false;
+    case O_TREM:
+        if (record->event.pressed) {
+            SEND_STRING(SS_RALT("\"") "o");
         }
         return false;
     }
@@ -122,11 +186,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_ACCENTS] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      ACC_GRV, _______,   E_GRV,  E_AIGU, ACC_GRV, _______,                      _______, U_GRV,  I_GRV,  _______, _______, _______,
+      ACC_GRV,  E_CIRC,   E_GRV,  E_AIGU, ACC_GRV, _______,                      _______,   U_GRV,  I_CIRC,  O_CIRC, _______, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______,  A_GRV,  _______, _______, ACC_AIG, ACC_TRE,                      _______, _______, _______, _______, _______, _______,
+      _______,  A_GRV,   A_CIRC, _______, ACC_AIG, ACC_TRE,                      _______,  U_CIRC,  I_TREM,  O_TREM, _______, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, _______, _______,   C_CED, ACC_CIR, _______,                      _______, _______, _______, _______, _______, PIX4D,
+      _______, _______, _______,   C_CED, ACC_CIR, _______,                      _______,  U_TREM, _______, _______, _______, PIX4D,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,     _______, _______, _______
                                       //`--------------------------'  `--------------------------'
