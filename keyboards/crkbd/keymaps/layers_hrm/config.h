@@ -62,6 +62,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGB_MATRIX_DEFAULT_ON false
 
 #ifdef RGBLIGHT_ENABLE
+    // Enable only some RGB effects
+    #define ENABLE_RGB_MATRIX_SOLID_REACTIVE
     #define RGBLIGHT_EFFECT_BREATHING
     #define RGBLIGHT_EFFECT_RAINBOW_MOOD
     #define RGBLIGHT_EFFECT_RAINBOW_SWIRL
