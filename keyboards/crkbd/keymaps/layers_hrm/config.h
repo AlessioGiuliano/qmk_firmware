@@ -58,6 +58,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define QUICK_TAP_TERM_PER_KEY
 #define QUICK_TAP_TERM 120
 
+// For sm_td
+#define MAX_DEFERRED_EXECUTORS 10
+
 // RGB
 #define RGB_MATRIX_DEFAULT_ON false
 

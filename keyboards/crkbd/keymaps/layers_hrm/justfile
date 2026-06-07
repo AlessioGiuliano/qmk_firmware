@@ -1,0 +1,4 @@
+# This builds the firmware and copies it outside of WSL
+build:
+    qmk compile
+    cp ../../../../crkbd_rev4_1_standard_layers_hrm.uf2 /mnt/c/Users/Alessio/Documents/QMK/

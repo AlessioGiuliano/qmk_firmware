@@ -16,6 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "sm_td.h"
 #include QMK_KEYBOARD_H
 
 enum layers {
@@ -63,6 +64,10 @@ enum custom_keycodes {
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (!process_smtd(keycode, record)) {
+        return false;
+    }
+
     switch (keycode) {
     case PIX4D:
         if (record->event.pressed) {
@@ -133,14 +138,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 };
 
+smtd_resolution on_smtd_action(uint16_t keycode, smtd_action action, uint8_t tap_count) {
+    switch (keycode) {
+        SMTD_MT(KC_A, KC_LEFT_GUI)
+        SMTD_MT(KC_S, KC_LEFT_ALT)
+        SMTD_MT(KC_D, KC_LEFT_CTRL)
+        SMTD_MT(KC_F, KC_LSFT)
+        SMTD_MT(KC_SCLN, KC_LEFT_GUI)
+        SMTD_MT(KC_L, KC_LEFT_ALT)
+        SMTD_MT(KC_K, KC_LEFT_CTRL)
+        SMTD_MT(KC_J, KC_RSFT)
+    }
+
+    return SMTD_RESOLUTION_UNHANDLED;
+}
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY_HRM] = LAYOUT_split_3x6_3_ex2(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T, LM_TOGG,    _______,    KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_BSPC,
+       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T, KC_LSFT,    LM_TOGG,    KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-       KC_ESC,   HRM_A,   HRM_S,   HRM_D,   HRM_F,    KC_G, _______,    _______,    KC_H,   HRM_J,   HRM_K,   HRM_L,HRM_SCLN, KC_QUOT,
+       KC_ESC,   KC_A,   KC_S,   KC_D,   KC_F,    KC_G, KC_LCTL,    _______,    KC_H,   KC_J,   KC_K,   KC_L,KC_SCLN, KC_QUOT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_DEL,
+      KC_LCTL,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_DEL,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           KC_LGUI,   MO(_NAVIGATION),  KC_SPC,     KC_ENT,   MO(_SYMBOLS), MO(_ACCENTS)
                                       //`--------------------------'  `--------------------------'
@@ -175,7 +195,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       _______, _______,   KC_F7,   KC_F8,   KC_F9,  KC_F12,                      _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, KC_LGUI,  HRM_F4,  HRM_F5,  HRM_F6,  KC_F11,                      HRM_LE,  HRM_DO,  HRM_UP,  HRM_RI,  _______, _______,
+      _______, KC_LGUI,  HRM_F4,  HRM_F5,  HRM_F6,  KC_F11,                      KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT,  _______, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, _______,   KC_F1,   KC_F2,   KC_F3,  KC_F10,                      _______, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
